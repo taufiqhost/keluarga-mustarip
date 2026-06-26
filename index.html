@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KELUARGA MUSTARIP DAN DEWI ARIYANTI</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+  body{background:linear-gradient(135deg,#fce7f3,#ddd6fe);height:100vh;display:flex;justify-content:center;align-items:center;overflow:hidden}
+  .amplop{position:relative;width:340px;height:460px;background:#fff;border-radius:20px;box-shadow:0 10px 30px #0002;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:25px;z-index:1}
+  .amplop h1{color:#be185d;font-size:24px;margin-bottom:8px;font-weight:900;letter-spacing:1px}
+  .amplop h2{color:#7c3aed;font-size:20px;margin-bottom:15px;font-weight:700}
+  .amplop p{color:#555;font-size:14px;margin-bottom:20px;line-height:1.6}
+  
+  /* PITA */
+  .pita{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,#f472b6,#ec4899);clip-path:polygon(0 0,100% 0,100% 32%,0 32%);transition:0.8s;z-index:2;border-radius:20px 20px 0 0}
+  .pita::after{content:"";position:absolute;left:50%;top:32%;transform:translateX(-50%);width:70px;height:70px;background:#be185d;border-radius:50%;box-shadow:inset 0 4px 10px #0003}
+  .pita.potong{transform:translateY(-100%) rotate(-5deg);opacity:0}
+
+  /* GUNTING */
+  .gunting{position:absolute;top:28%;z-index:3;font-size:55px;cursor:pointer;transition:0.2s;animation:gooyang 1.2s infinite;filter:drop-shadow(0 4px 6px #0003)}
+  @keyframes gooyang{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+  .gunting:active{transform:scale(0.85) rotate(25deg)}
+  .gunting.hide{opacity:0;pointer-events:none}
+  
+  .hint{position:absolute;bottom:25px;font-size:13px;color:#888;font-weight:600;transition:0.5s}
+  .hint.hide{opacity:0}
+
+  /* LOVE JATUH */
+  .love{position:absolute;top:-20px;font-size:18px;color:#ec4899;opacity:0;animation:loveJatuh 5s ease-in forwards;z-index:4;filter:drop-shadow(0 2px 4px #0002)}
+  @keyframes loveJatuh{
+    0%{top:-20px;opacity:1;transform:translateX(0) rotate(0deg) scale(0.8)}
+    50%{opacity:1}
+    100%{top:100vh;opacity:0;transform:translateX(var(--gox)) rotate(720deg) scale(1.2)}
+  }
+
+  /* OVERLAY GELAP PAS BUKA */
+  .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;opacity:0;pointer-events:none;transition:5s;z-index:5}
+  .overlay.show{opacity:0.6}
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="amplop">
+  <h1>KELUARGA MUSTARIP</h1>
+  <h2>& DEWI ARIYANTI 💕</h2>
+  <p>Selamat datang di album kenangan kami<br>Klik guntingnya untuk melihat foto-foto terbaik ✨</p>
+  
+  <div class="pita" id="pita"></div>
+  <div class="gunting" id="gunting">✂️</div>
+  <div class="hint" id="hint">Klik guntingnya untuk buka 👆</div>
+</div>
+
+<audio id="snd" src="https://cdn.pixabay.com/audio/2022/03/15/audio_d1717b5c2c.mp3"></audio>
+
+<script>
+  const gunting = document.getElementById('gunting');
+  const pita = document.getElementById('pita');
+  const snd = document.getElementById('snd');
+  const hint = document.getElementById('hint');
+  const overlay = document.getElementById('overlay');
+
+  gunting.onclick = () => {
+    snd.play(); 
+    pita.classList.add('potong');
+    gunting.classList.add('hide');
+    hint.classList.add('hide');
+    overlay.classList.add('show');
+
+    // HUJAN LOVE 5 DETIK ❤️
+    for(let i=0; i<40; i++){
+      setTimeout(()=>{
+        let love = document.createElement('div');
+        love.className = 'love';
+        love.innerText = '❤️';
+        love.style.left = Math.random()*100 + 'vw';
+        love.style.setProperty('--gox', (Math.random()-0.5)*200 + 'px');
+        love.style.animationDelay = Math.random()*0.5 + 's';
+        love.style.fontSize = (14 + Math.random()*10) + 'px';
+        document.body.appendChild(love);
+        setTimeout(()=>love.remove(), 5000);
+      }, i*120);
+    }
+
+    // PINDAH SETELAH 5 DETIK
+    setTimeout(()=>{
+      window.location.href = "album.html";
+    }, 5000);
+  }
+</script>
+
+</body>
+</html>
