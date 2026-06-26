@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KELUARGA MUSTARIP DAN DEWI ARIYANTI</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+  body{background:#111;height:100vh;display:flex;justify-content:center;align-items:center;overflow:hidden}
+  
+  /* KARTU UNDANGAN HITAM PUTIH */
+  .kartu{position:relative;width:350px;height:480px;background:linear-gradient(135deg,#f5f5f5,#ffffff);border-radius:12px;box-shadow:0 15px 40px #0006;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;border:1px solid #ddd;overflow:hidden}
+  
+  /* MOTIF LASER CUT DI SUDUT */
+  .kartu::before, .kartu::after{
+    content:"";position:absolute;width:120px;height:120px;
+    border:1px solid #ccc;opacity:0.4;
+    background-image: radial-gradient(#aaa 1px, transparent 1px);
+    background-size: 10px 10px;
+  }
+  .kartu::before{top:0;left:0;border-radius:0 0 100px 0;border-left:none;border-top:none}
+  .kartu::after{bottom:0;right:0;border-radius:100px 0 0 0;border-right:none;border-bottom:none}
+
+  .kartu h1{color:#000;font-size:22px;margin-bottom:5px;font-weight:900;letter-spacing:2px}
+  .kartu h2{color:#333;font-size:18px;margin-bottom:20px;font-weight:600}
+  .kartu p{color:#555;font-size:14px;margin-bottom:25px;line-height:1.7}
+
+  /* PITA MERAH SILANG */
+  .pita-merah{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);width:140%;height:40px;background:#c1121f;z-index:3;transition:0.8s cubic-bezier(.77,0,.18,1);box-shadow:0 3px 10px #0003}
+  .pita-merah.potong{transform:translate(-50%,-150%) rotate(45deg) scale(0);opacity:0}
+  .pita-merah::after{ /* Pita kedua nyilang */
+    content:"";position:absolute;top:0;left:0;width:100%;height:100%;background:#c1121f;transform:rotate(90deg);
+  }
+
+  /* MUTIARA TENGAH */
+  .mutiara{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:22px;height:22px;background:radial-gradient(circle at 30% 30%, #fff, #e0e0e0);border-radius:50%;z-index:4;box-shadow:inset 0 2px 4px #fff, 0 3px 8px #0004;transition:0.5s}
+  .mutiara.hide{opacity:0;transform:translate(-50%,-50%) scale(0)}
+
+  /* GUNTING */
+  .gunting{position:absolute;bottom:25px;z-index:5;font-size:45px;cursor:pointer;transition:0.3s;animation:gooyang 1.5s infinite;color:#c1121f;filter:drop-shadow(0 3px 5px #0003)}
+  @keyframes gooyang{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+  .gunting:active{transform:scale(0.8) rotate(20deg)}
+  .gunting.hide{opacity:0;pointer-events:none}
+  
+  .hint{position:absolute;bottom:80px;font-size:12px;color:#777;font-weight:600;letter-spacing:1px;transition:0.5s}
+  .hint.hide{opacity:0}
+
+  /* LOVE JATUH 5 DETIK */
+  .love{position:absolute;top:-20px;font-size:16px;color:#c1121f;opacity:0;animation:loveJatuh 5s ease-in forwards;z-index:6;filter:drop-shadow(0 2px 3px #0002)}
+  @keyframes loveJatuh{
+    0%{top:-20px;opacity:1;transform:translateX(0) rotate(0deg)}
+    100%{top:100vh;opacity:0;transform:translateX(var(--gox)) rotate(540deg)}
+  }
+  .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;opacity:0;pointer-events:none;transition:5s;z-index:7}
+  .overlay.show{opacity:0.5}
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="kartu">
+  <h1>KELUARGA MUSTARIP</h1>
+  <h2>& DEWI ARIYANTI</h2>
+  <p>Selamat datang di album kenangan kami<br>Klik guntingnya untuk membuka ✨</p>
+  
+  <div class="pita-merah" id="pita"></div>
+  <div class="mutiara" id="mutiara"></div>
+  <div class="gunting" id="gunting">✂️</div>
+  <div class="hint" id="hint">POTONG PITANYA</div>
+</div>
+
+<audio id="snd" src="https://cdn.pixabay.com/audio/2022/03/15/audio_d1717b5c2c.mp3"></audio>
+
+<script>
+  const gunting = document.getElementById('gunting');
+  const pita = document.getElementById('pita');
+  const mutiara = document.getElementById('mutiara');
+  const snd = document.getElementById('snd');
+  const hint = document.getElementById('hint');
+  const overlay = document.getElementById('overlay');
+
+  gunting.onclick = () => {
+    snd.play(); 
+    pita.classList.add('potong'); // Pita merah hilang
+    mutiara.classList.add('hide'); // Mutiara hilang
+    gunting.classList.add('hide');
+    hint.classList.add('hide');
+    overlay.classList.add('show');
+
+    // HUJAN LOVE MERAH 5 DETIK
+    for(let i=0; i<35; i++){
+      setTimeout(()=>{
+        let love = document.createElement('div');
+        love.className = 'love';
+        love.innerText = '❤️';
+        love.style.left = Math.random()*100 + 'vw';
+        love.style.setProperty('--gox', (Math.random()-0.5)*150 + 'px');
+        love.style.animationDelay = Math.random()*0.5 + 's';
+        document.body.appendChild(love);
+        setTimeout(()=>love.remove(), 5000);
+      }, i*140);
+    }
+
+    setTimeout(()=>{ window.location.href = "album.html"; }, 5000);
+  }
+</script>
+
+</body>
+</html>
